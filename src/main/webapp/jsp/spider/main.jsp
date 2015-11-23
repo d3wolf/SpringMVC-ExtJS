@@ -2,7 +2,7 @@
 
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-<title>Menu Manage</title>
+<title>Spider Main</title>
 <link rel="stylesheet" href="${pageContext.request.contextPath}/javascript/extjs/resources/css/ext-all.css" type="text/css"></link>
 <script type="text/javascript" src="${pageContext.request.contextPath}/javascript/extjs/ext-all.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/javascript/extjs/locale/ext-lang-zh_CN.js"></script>
