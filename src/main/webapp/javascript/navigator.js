@@ -111,7 +111,7 @@ Ext.onReady(function() {
 				text : '首页',
 				handler:function(){
 				//	Ext.getCmp('home').show();
-					window.location.href=basePath  + '/#jsp/navigator/homepage.jsp' ;
+					window.location.href=basePath  + '/#jsp/homepage.jsp' ;
 				}
 			}]
 		}), navigatorPanel, centerPanel]

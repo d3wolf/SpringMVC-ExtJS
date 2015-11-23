@@ -1,4 +1,4 @@
-package navigator.model;
+package system.model;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;

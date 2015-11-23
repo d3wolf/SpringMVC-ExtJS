@@ -1,4 +1,4 @@
-package navigator.service.impl;
+package system.service.impl;
 
 import java.util.List;
 import java.util.Map;
@@ -8,8 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import navigator.model.MenuNode;
-import navigator.service.MenuService;
+import system.model.MenuNode;
+import system.service.MenuService;
 import common.Constants;
 import common.dao.BaseDao;
 

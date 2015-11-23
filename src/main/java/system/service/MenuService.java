@@ -1,9 +1,9 @@
-package navigator.service;
+package system.service;
 
 import java.util.List;
 import java.util.Map;
 
-import navigator.model.MenuNode;
+import system.model.MenuNode;
 
 public interface MenuService {
 

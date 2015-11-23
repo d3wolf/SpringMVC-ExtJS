@@ -1,4 +1,4 @@
-package common.service;
+package system.service;
 
 public interface Log4jConfig {
 
