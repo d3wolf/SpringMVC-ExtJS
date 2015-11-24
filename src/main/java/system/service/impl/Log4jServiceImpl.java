@@ -51,6 +51,9 @@ public class Log4jServiceImpl implements Log4jService {
 			Level level = logger.getLevel();
 			if (level != null) {
 				return level;
+			}else{
+				Logger rootLogger = Logger.getRootLogger();
+				return rootLogger.getLevel();
 			}
 		}
 		return null;

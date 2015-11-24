@@ -67,6 +67,8 @@ public class PCDMappingServiceImpl implements PCDMappingService {
 		logger.debug("getAllProvinces");
 		Document doc = loadFailureModeReasonXML();
 		String xpath = "/PCD/Provinces/Province";
+		
+		@SuppressWarnings("unchecked")
 		List<Element> partClsEls = doc.selectNodes(xpath);
 
 		JSONObject allInfo = new JSONObject();
@@ -100,6 +102,7 @@ public class PCDMappingServiceImpl implements PCDMappingService {
 		Document doc = loadFailureModeReasonXML();
 		String xpath = String.format("/PCD/Cities/City[@PID=%s]", pid);
 
+		@SuppressWarnings("unchecked")
 		List<Element> cEls = doc.selectNodes(xpath);
 
 
@@ -130,6 +133,7 @@ public class PCDMappingServiceImpl implements PCDMappingService {
 		Document doc = loadFailureModeReasonXML();
 		String xpath = String.format("/PCD/Districts/District[@CID=%s]", cid);
 
+		@SuppressWarnings("unchecked")
 		List<Element> cEls = doc.selectNodes(xpath);
 
 		JSONArray array = new JSONArray();

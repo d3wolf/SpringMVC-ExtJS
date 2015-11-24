@@ -8,7 +8,6 @@ public interface Log4jService {
 	
 	/**
 	 * 获取当前所有的logger名字
-	 * @throws ClassNotFoundException
 	 */
 	public List<String> getCurrentLoggerNames() ;
 	
