@@ -12,6 +12,20 @@
 	function log4jManage() {
 		Ext.tip.QuickTipManager.init();
 		
+		var targetStore = new Ext.data.JsonStore({
+			fields : [ 'id', 'name' ],
+			autoLoad:true,
+			proxy : {
+				type : 'ajax',
+				url : "${pageContext.request.contextPath}/log/getTarget.do",
+				autoLoad : true,
+				reader : {
+					type : 'json',
+					root : 'root'
+				}
+			},
+		});
+		
 		var levelStore = Ext.create('Ext.data.Store', {
 		    fields: ['id', 'name'],
 		    data : [
@@ -34,11 +48,15 @@
 		    renderTo: Ext.getBody(),
 		    layout : 'hbox',
 		    items: [{
-		    	xtype: 'textfield',
+		    	xtype: 'combo',
 		    	fieldLabel : 'Logger',
 		    	labelAlign : 'right',
+		    	store : targetStore,
+		    	queryMode : 'local',
 		        id: 'logTarget',
-		        width : 350,
+		        displayField : 'name',
+		    	valueField : 'id',
+		        width : 400,
 		        allowBlank: false
 		    },{
 		    	xtype : 'combo',
@@ -78,6 +96,11 @@
 	
 
 	function setTargetLevel(target, levelStr){
+		if(target == null || target == '' || levelStr == null || levelStr == ''){
+			Ext.MessageBox.alert("错误", "请设置参数");
+			return;
+		}
+		
 		Ext.Ajax.request({
 		    url: "${pageContext.request.contextPath}/log/setLevel.do",
 		    method : 'post',

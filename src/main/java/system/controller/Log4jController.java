@@ -1,9 +1,11 @@
 package system.controller;
 
 import java.io.IOException;
+import java.util.List;
 
 import javax.servlet.http.HttpServletResponse;
 
+import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
 import org.apache.log4j.Level;
@@ -29,9 +31,29 @@ public class Log4jController {
 
 	@Autowired
 	private Log4jService log4jService;
+	
+	
+	@RequestMapping(value="getTarget.do")
+	public void getTargets(HttpServletResponse response) throws IOException, Exception{
+		List<String> list = log4jService.getCurrentLoggerNames();
+		
+		JSONArray ja = new JSONArray();
+		for(String name : list){
+			JSONObject jo = new JSONObject();
+			jo.put("id", name);
+			jo.put("name", name);
+			ja.add(jo);
+		}
+		
+		JSONObject targets = new JSONObject();
+		targets.put("root", ja);
+		
+		response.setContentType("text/html;charset=UTF-8");//处理乱码
+		response.getWriter().write(targets.toString());
+	}
 
 	@RequestMapping("getLevel.do")
-	public void getTargetLogLevel(@RequestParam("target") String target, HttpServletResponse response) throws IOException {
+	public void getTargetLogLevel(@RequestParam(value="target", required=true) String target, HttpServletResponse response) throws Exception {
 		String levelStr = log4jService.getLevelStrByTarget(target);
 
 		JSONObject jo = new JSONObject();
@@ -45,7 +67,7 @@ public class Log4jController {
 	}
 
 	@RequestMapping("setLevel.do")
-	public void setTargetLogLevel(@RequestParam("target") String target, @RequestParam("levelStr") String levelStr, HttpServletResponse response)
+	public void setTargetLogLevel(@RequestParam(value="target", required=true) String target, @RequestParam(value="levelStr", required=true) String levelStr, HttpServletResponse response)
 			throws Exception {
 		Level level = log4jService.getLevelByLevelStr(levelStr);
 		log4jService.setTargetLevel(target, level);

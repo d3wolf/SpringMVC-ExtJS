@@ -1,8 +1,16 @@
 package system.service;
 
+import java.util.List;
+
 import org.apache.log4j.Level;
 
 public interface Log4jService {
+	
+	/**
+	 * 获取当前所有的logger名字
+	 * @throws ClassNotFoundException
+	 */
+	public List<String> getCurrentLoggerNames() ;
 	
 	/**
 	 * 获取目标level
