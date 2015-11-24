@@ -28,4 +28,17 @@ public interface JokeService {
 	 * @return
 	 */
 	public List<Joke> getJokeFromDB(Integer page);
+	
+	/**
+	 * 根据id索引获取Joke
+	 * @param id
+	 * @return
+	 */
+	public Joke getJokeById(Long id);
+	/**
+	 * 获取到下一个Joke,将id++获取
+	 * @param joke
+	 * @return
+	 */
+	public Joke getNextJoke(Joke joke);
 }
