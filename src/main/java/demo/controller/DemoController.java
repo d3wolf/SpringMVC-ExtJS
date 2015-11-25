@@ -45,4 +45,10 @@ public class DemoController {
 		response.setContentType("text/html;charset=UTF-8");//处理乱码
 		response.getWriter().write(ap);
 	}
+	
+	@RequestMapping("wizard.do")
+	public String getDemoWizard() {
+		return "demo/wizard";
+	}
+	
 }

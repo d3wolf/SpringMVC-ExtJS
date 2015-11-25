@@ -193,21 +193,16 @@
 	}
 	
 	function saveNodeAttribute(tree, record){
-		var id = record.get('id');
+		var id = record.getId();
 		var text = record.isModified('text')?record.get('text'):'';
 		var internal = record.isModified('internal')?record.get('internal'):'';
 		var actionUrl = record.isModified('actionUrl')?record.get('actionUrl'):'';
 		
-/* 		record.load(id,
-  			{
-				callback: function(record, operation) {
-						alert('a');
-  				}
-		});   */
 		if(!record.isModified('text') && !record.isModified('internal') && !record.isModified('actionUrl')){
 			Ext.MessageBox.alert("注意", "没有更改数据,未做保存");
 			return;
 		}
+	//	Ext.MessageBox.alert("id", id);
 		Ext.Ajax.request({
 		    url: '${pageContext.request.contextPath}/menu/save.do',
 		    method : 'post',
@@ -219,13 +214,9 @@
 		    	actionUrl : actionUrl
 		    },
 		    success: function(response){
-		    //	alert(tree.getSelectionModel().getSelection()[0]);
-		    	record.load(id,
-		      			{
-		    				callback: function(record, operation) {
-		    						alert('a');
-		      				}
-		    		}); 
+		   		var content = tree.getStore().getById(record.getId());     //获取要刷新的节点
+				var opions = {node : content};//进行封装
+		    	tree.getStore().load(content);
 		    },
 		    failure: function(response, opts) {
 		        Ext.MessageBox.alert("错误", "保存失败，请重试！" + response.responseText);
