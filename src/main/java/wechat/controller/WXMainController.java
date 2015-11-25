@@ -14,10 +14,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-import spider.model.Joke;
-import spider.service.JokeService;
-import wechat.model.WXUser;
-import wechat.model.WXUserMsgIndex;
 import wechat.service.MessageService;
 import wechat.service.SignService;
 import wechat.service.WXCommonService;
@@ -55,6 +51,8 @@ public class WXMainController {
 			// 通过检验signature对请求进行校验，若校验成功则原样返回echostr，表示接入成功，否则接入失败
 			if (signService.checkSignature(signature, timestamp, nonce)) {
 				out.print(echostr);
+			}else{
+				logger.info("该请求不是来自微信");
 			}
 			out.close();
 			out = null;

@@ -197,4 +197,8 @@ public class BaseDaoImpl<T> implements BaseDao<T> {
 		return q.executeUpdate();
 	}
 
+	public Integer max(String hql) {
+		return (Integer) this.getCurrentSession().createQuery(hql).uniqueResult();
+	}
+
 }

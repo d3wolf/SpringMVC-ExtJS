@@ -87,8 +87,8 @@ public class JokeServiceImpl implements JokeService {
 
 	@Transactional(propagation = Propagation.NOT_SUPPORTED, readOnly = true)
 	public Joke getNextJoke(Joke joke) {
-		Long maxId = jokeDao.count("select max(joke.id) from Joke joke");
-		Long id = joke == null ? 0 : joke.getId();
+		Integer maxId = jokeDao.max("select max(joke.id) from Joke joke");
+		Integer id = joke == null ? 0 : joke.getId();
 		Joke nextJoke = null;
 		while (nextJoke == null && id <= maxId) {
 			id++;
@@ -99,7 +99,7 @@ public class JokeServiceImpl implements JokeService {
 	}
 
 	@Transactional(propagation = Propagation.NOT_SUPPORTED, readOnly = true)
-	public Joke getJokeById(Long id) {
+	public Joke getJokeById(Integer id) {
 		List<Joke> jokes = jokeDao.find("from Joke where id=?", new Object[] { id });
 		if (jokes != null && jokes.size() > 0) {
 			return jokes.get(0);

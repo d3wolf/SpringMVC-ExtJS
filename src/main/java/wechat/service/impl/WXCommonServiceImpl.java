@@ -12,10 +12,10 @@ import spider.service.JokeService;
 import wechat.model.WXUser;
 import wechat.model.WXUserMsgIndex;
 import wechat.service.WXCommonService;
-
 import common.dao.BaseDao;
 
 @Service
+@Transactional(readOnly = false,propagation = Propagation.REQUIRED,rollbackFor = Exception.class)
 public class WXCommonServiceImpl implements WXCommonService {
 	
 	@Autowired
@@ -24,8 +24,6 @@ public class WXCommonServiceImpl implements WXCommonService {
 	@Autowired
 	private BaseDao<WXUserMsgIndex> indexDao;
 
-	// 如果有事务,那么加入事务,没有的话新建一个(不写的情况下)
-    @Transactional(propagation=Propagation.REQUIRED) 
 	public WXUser getOrCreateWXUser(String name) {
 		WXUser user = null;
 		
@@ -39,7 +37,6 @@ public class WXCommonServiceImpl implements WXCommonService {
 		return user;
 	}
 
-    @Transactional(propagation=Propagation.REQUIRED)
 	public WXUserMsgIndex getOrCreateUserMsgIndex(WXUser user) {
 		WXUserMsgIndex index = null;
 		
@@ -53,7 +50,6 @@ public class WXCommonServiceImpl implements WXCommonService {
 		return index;
 	}
 
-    @Transactional(propagation=Propagation.REQUIRED)
 	public void updateUserMsgIndex(WXUserMsgIndex msgIndex) {
 		indexDao.update(msgIndex);
 	}
@@ -61,7 +57,6 @@ public class WXCommonServiceImpl implements WXCommonService {
 	@Autowired
 	private JokeService jokeService;
 	
-	@Transactional
 	public String getNextJokeByUserName(String name) {
 		WXUser user = getOrCreateWXUser(name);
 		WXUserMsgIndex msgIndex = getOrCreateUserMsgIndex(user);

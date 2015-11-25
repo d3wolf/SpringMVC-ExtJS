@@ -29,6 +29,11 @@ public interface WXCommonService {
 	 */
 	public void updateUserMsgIndex(WXUserMsgIndex msgIndex);
 	
+	/**
+	 * 获取用户的下一个Joke
+	 * @param name
+	 * @return
+	 */
 	public String getNextJokeByUserName(String name);
 
 }

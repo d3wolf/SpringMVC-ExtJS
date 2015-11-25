@@ -163,5 +163,12 @@ public interface BaseDao<T> {
 	 * @return
 	 */
 	public Integer executeHql(String hql, List<Object> param);
+	
+	/**
+	 * select max(*) from 类
+	 * @param hql
+	 * @return
+	 */
+	public Integer max(String hql);
 
 }

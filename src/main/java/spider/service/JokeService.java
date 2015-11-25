@@ -34,7 +34,7 @@ public interface JokeService {
 	 * @param id
 	 * @return
 	 */
-	public Joke getJokeById(Long id);
+	public Joke getJokeById(Integer id);
 	/**
 	 * 获取到下一个Joke,将id++获取
 	 * @param joke
