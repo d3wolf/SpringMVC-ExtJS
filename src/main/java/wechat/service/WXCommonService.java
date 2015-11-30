@@ -21,13 +21,6 @@ public interface WXCommonService {
 	 */
 	public WXUserMsgIndex getOrCreateUserMsgIndex(WXUser user);
 
-	/**
-	 * 更新消息索引
-	 * 
-	 * @param msgIndex
-	 * @return
-	 */
-	public void updateUserMsgIndex(WXUserMsgIndex msgIndex);
 	
 	/**
 	 * 获取用户的下一个Joke

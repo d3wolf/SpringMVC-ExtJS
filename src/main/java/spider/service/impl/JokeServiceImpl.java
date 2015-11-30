@@ -9,17 +9,20 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import spider.dao.JokeDao;
 import spider.model.Joke;
 import spider.service.JokeService;
 import spider.service.JsoupService;
-import common.dao.BaseDao;
 
 @Service
+@Transactional(readOnly = false, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
 public class JokeServiceImpl implements JokeService {
 
 	private static final Logger logger = Logger.getLogger(JokeServiceImpl.class.getName());
@@ -61,16 +64,14 @@ public class JokeServiceImpl implements JokeService {
 	}
 
 	@Autowired
-	@Qualifier("baseDaoImpl")
-	private BaseDao<Joke> jokeDao;
+	private JokeDao jokeJpaDao;
 
-	@Transactional(rollbackFor = Exception.class)
 	public int persistJoke(List<Joke> jokes) {
 		int count = 0;
 		for (Joke joke : jokes) {
-			List<Joke> existedData = jokeDao.find("from Joke where dataId=?", new Object[] { joke.getDataId() });
+			List<Joke> existedData = jokeJpaDao.findJokeByDataId(joke.getDataId());
 			if (existedData.size() == 0) {
-				jokeDao.save(joke);
+				jokeJpaDao.save(joke);
 				count++;
 			} else {
 				logger.debug("data-id=" + joke.getDataId() + " 已经存在,不再保存");
@@ -82,14 +83,21 @@ public class JokeServiceImpl implements JokeService {
 
 	@Transactional(propagation = Propagation.NOT_SUPPORTED, readOnly = true)
 	public List<Joke> getJokeFromDB(Integer page) {
-		List<Joke> jokes = jokeDao.find("from Joke", new Object[] {}, page, 10);
-		logger.debug(page + "--" + jokes.size());
-		return jokes;
+
+
+		Integer queryPage = page > 0 ? page - 1 : 0;
+		Pageable pageable = new PageRequest(queryPage, 10);
+		Page<Joke> jokes = jokeJpaDao.findAll(pageable);
+		
+		List<Joke> list  = jokes.getContent();
+
+		logger.debug(page + "--" + list.size());
+		return list;
 	}
 
 	@Transactional(propagation = Propagation.NOT_SUPPORTED, readOnly = true)
 	public Joke getNextJoke(Joke joke) {
-		Integer maxId = jokeDao.max("select max(joke.id) from Joke joke");
+		Integer maxId = jokeJpaDao.getJokeMaxId();
 		Integer id = joke == null ? 0 : joke.getId();
 		Joke nextJoke = null;
 		while (nextJoke == null && id <= maxId) {
@@ -102,11 +110,7 @@ public class JokeServiceImpl implements JokeService {
 
 	@Transactional(propagation = Propagation.NOT_SUPPORTED, readOnly = true)
 	public Joke getJokeById(Integer id) {
-		List<Joke> jokes = jokeDao.find("from Joke where id=?", new Object[] { id });
-		if (jokes != null && jokes.size() > 0) {
-			return jokes.get(0);
-		}
-		return null;
+		return jokeJpaDao.getJokeById(id);
 	}
 
 }

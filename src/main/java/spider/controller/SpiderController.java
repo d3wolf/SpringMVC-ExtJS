@@ -37,9 +37,9 @@ public class SpiderController {
 	@RequestMapping("joke.do")
 	public void getJokesByPage(@RequestParam("urlIndex") String urlIndex, HttpServletResponse response) throws IOException {
 		List<Joke> jokes = jokeService.getJokeBy3rd(urlIndex);
-		logger.info("找到Joke条数:" + jokes.size());
+		logger.debug("找到Joke条数:" + jokes.size());
 		int count = jokeService.persistJoke(jokes);
-		logger.info("保存Joke条数:" + count);
+		logger.debug("保存Joke条数:" + count);
 
 		JSONObject jo = new JSONObject();
 		jo.put("find", jokes.size());
