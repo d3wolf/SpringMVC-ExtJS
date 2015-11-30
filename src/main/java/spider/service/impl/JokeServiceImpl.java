@@ -9,6 +9,7 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -32,7 +33,7 @@ public class JokeServiceImpl implements JokeService {
 		List<Joke> jokes = new ArrayList<Joke>();
 
 		String url = String.format(urlPattern, urlIndex);
-		logger.info("craw url: " + url);
+		logger.info("crawl url: " + url);
 		Document doc = jsoupService.getDocumentFromUrl(url);
 		Elements mainItems = jsoupService.getMainContentSet(doc, "ul.article-list");
 		for (Element mainItem : mainItems) {
@@ -60,6 +61,7 @@ public class JokeServiceImpl implements JokeService {
 	}
 
 	@Autowired
+	@Qualifier("baseDaoImpl")
 	private BaseDao<Joke> jokeDao;
 
 	@Transactional(rollbackFor = Exception.class)

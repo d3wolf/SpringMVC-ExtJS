@@ -6,7 +6,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import common.service.BaseService;
 
-@Service("baseService")
+@Service
 @Transactional(readOnly = false,propagation = Propagation.REQUIRED,rollbackFor = Exception.class)
 public class BaseServiceImpl implements BaseService{
 

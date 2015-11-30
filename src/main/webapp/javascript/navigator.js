@@ -108,7 +108,9 @@ Ext.onReady(function() {
 			height:40,
 			border:false,
 			items : [{
-				text : '首页',
+			//	text : 'a',
+				icon : 'images/home.gif',
+				tooltip : '首页',
 				handler:function(){
 				//	Ext.getCmp('home').show();
 					window.location.href=basePath  + '/#jsp/homepage.jsp' ;
@@ -150,80 +152,4 @@ function resetIframe(rightUrl){
     	var title = newFrame.contentWindow.document.title;
     	document.title = title;
     };
-}
-
-function post(URL, PARAMS) {   
-    var frame = document.getElementById("maincontentframe"); 
-    frame.style.display ="none"; //隐藏 
-    
-    //构造form
-    var temp = document.createElement("form");      
-    temp.action = URL; 
-    temp.method = "post";
-    temp.target="maincontentframe";
-    alert(temp.target);
-    for (var x in PARAMS) {
-        var opt = document.createElement("textarea");
-        opt.name = x;
-        opt.value = PARAMS[x];
-        temp.appendChild(opt);
-    }      
-    document.body.appendChild(temp);
-    temp.submit();
-    document.body.removeChild(temp) ;
-    //form提交完成
-
-    frame.style.display ="block"; 
-
-}  
-
-var setAndEvalJs = function(html){
- 	var hd = document.getElementsByTagName("head")[0];
- 	var re = /(?:<script([^>]*)?>)((\n|\r|.)*?)(?:<\/script>)/ig;
- //	var re = /<script(.|\n)*?>(.|\n|\r\n)*?<\/script>/ig;
- 	var srcRe = /\ssrc=([\'\"])(.*?)\1/i;
- 	var typeRe = /\stype=([\'\"])(.*?)\1/i;
- 	var match;
- 	
- 	var jsSrc = new Array();
- 	var jsStr = new Array();
- 	while(match = re.exec(html)){
-		var attrs = match[1];
-		var srcMatch = attrs ? attrs.match(srcRe) : false;
-		if(srcMatch && srcMatch[2]){
-			var s = document.createElement("script");
-			s.src = srcMatch[2];
-			var typeMatch = attrs.match(typeRe);
-			if(typeMatch && typeMatch[2]){
-				s.type = typeMatch[2];
-			}
-			jsSrc.push(s.src);
-		}else if(match[2] && match[2].length > 0){
-			jsStr.push(match[2]);
-			if(window.execScript) {
-				window.execScript(match[2]);
-			} else {
-				window.eval(match[2]);
-			}
-		}
-	}
-
-//	loadJs(jsSrc, jsStr);
-}
-
-function loadJs(jsSrcArr,jsStrArr){
-	if(jsSrcArr.length>0){
-		var src = jsSrcArr.pop();
-		alert("载入: "+ src);
-		jQuery.getScript(src, loadJs(jsSrcArr, jsStrArr));
-	}else{
-	//	alert("处理非src js****************** " + jsStrArr);
-		for(x in jsStrArr){
-			if(window.execScript) {
-				window.execScript(jsStrArr[x]);
-			} else {
-				window.eval(jsStrArr[x]);
-			}
-		}
-	}
 }

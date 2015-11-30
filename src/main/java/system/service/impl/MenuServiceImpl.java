@@ -5,6 +5,7 @@ import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -17,6 +18,7 @@ import common.dao.BaseDao;
 public class MenuServiceImpl implements MenuService {
 
 	@Autowired
+	@Qualifier("baseDaoImpl")
 	private BaseDao<MenuNode> menuDao;
 
 	@Transactional(rollbackFor = Exception.class)

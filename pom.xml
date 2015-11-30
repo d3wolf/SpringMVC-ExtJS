@@ -9,14 +9,27 @@
 	<url>http://maven.apache.org</url>
 
 	<properties>
-		<org.springframework.version>3.2.5.RELEASE</org.springframework.version>
+		<springframework.version>3.2.5.RELEASE</springframework.version>
+		<hibernate.version>3.6.7.Final</hibernate.version>
 	</properties>
 
 	<dependencies>
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
-			<version>3.8.1</version>
+			<version>4.11</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.mockito</groupId>
+			<artifactId>mockito-core</artifactId>
+			<version>1.9.5</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-test</artifactId>
+			<version>3.2.3.RELEASE</version>
 			<scope>test</scope>
 		</dependency>
 
@@ -40,36 +53,37 @@
 			<version>1.2.2</version>
 		</dependency>
 
+		<!-- spring -->
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-core</artifactId>
-			<version>${org.springframework.version}</version>
+			<version>${springframework.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-web</artifactId>
-			<version>${org.springframework.version}</version>
+			<version>${springframework.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-webmvc</artifactId>
-			<version>${org.springframework.version}</version>
+			<version>${springframework.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-tx</artifactId>
-			<version>${org.springframework.version}</version>
+			<version>${springframework.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-orm</artifactId>
-			<version>${org.springframework.version}</version>
+			<version>${springframework.version}</version>
 		</dependency>
 		<!-- spring jdbc -->
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-jdbc</artifactId>
-			<version>${org.springframework.version}</version>
+			<version>${springframework.version}</version>
 		</dependency>
 		<!-- mysql jdbc -->
 		<dependency>
@@ -93,13 +107,6 @@
 			<classifier>jdk15</classifier>
 		</dependency>
 
-		<!-- javaassist -->
-		<dependency>
-			<groupId>javassist</groupId>
-			<artifactId>javassist</artifactId>
-			<version>3.12.1.GA</version>
-		</dependency>
-
 		<!-- hibernate-annotation -->
 		<dependency>
 			<groupId>javax.persistence</groupId>
@@ -108,18 +115,13 @@
 		</dependency>
 		<dependency>
 			<groupId>org.hibernate</groupId>
-			<artifactId>hibernate-annotations</artifactId>
-			<version>3.4.0.GA</version>
+			<artifactId>hibernate-core</artifactId>
+			<version>${hibernate.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.hibernate</groupId>
-			<artifactId>hibernate-commons-annotations</artifactId>
-			<version>3.3.0.ga</version>
-		</dependency>
-		<dependency>
-			<groupId>org.hibernate</groupId>
-			<artifactId>ejb3-persistence</artifactId>
-			<version>1.0.2.GA</version>
+			<artifactId>hibernate-entitymanager</artifactId>
+			<version>${hibernate.version}</version>
 		</dependency>
 
 		<!-- log4j -->
@@ -146,14 +148,32 @@
 			<version>1.1.1</version>
 		</dependency>
 
-		<!--jsoup -->
+		<!--for spider, jsoup & httpclient -->
 		<dependency>
 			<groupId>org.jsoup</groupId>
 			<artifactId>jsoup</artifactId>
 			<version>1.6.3</version>
 		</dependency>
+		<dependency>
+			<groupId>org.apache.httpcomponents</groupId>
+			<artifactId>httpclient</artifactId>
+			<version>4.5.1</version>
+		</dependency>
+
 	</dependencies>
 	<build>
 		<finalName>maven-web</finalName>
+
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-surefire-plugin</artifactId>
+				<version>2.5</version>
+				<configuration>
+					<skipTests>true</skipTests>
+				</configuration>
+			</plugin>
+
+		</plugins>
 	</build>
 </project>

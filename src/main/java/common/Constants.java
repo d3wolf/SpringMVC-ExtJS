@@ -16,4 +16,18 @@ public class Constants {
 		/** 进度条参数-进度消息*/
 		public static final String processMessageAttribute = "processMessage";  
 	}
+	
+	public static final class QueueConstants{
+		/** 队列状态- STARTED*/
+		public static final String QUEUE_STATE_STARTED = "STARTED";
+		/** 条目状态*/
+		public static final String ENTRY_STATE_RUNNING = "RUNNING";
+		/** 条目状态*/
+		public static final String ENTRY_STATE_SEVERE = "SEVERE";
+		/** 条目状态*/
+		public static final String ENTRY_STATE_READY = "READY";
+		/** 条目状态*/
+		public static final String ENTRY_STATE_CLOSED = "CLOSED";
+		
+	}
 }
