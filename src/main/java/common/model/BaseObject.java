@@ -61,4 +61,8 @@ public class BaseObject {
 	public void setModefyTimestamp(Date modefyTimestamp) {
 		this.modefyTimestamp = modefyTimestamp;
 	}
+	
+	public String toString(){
+		return this.getClass().getName() + ":" + id;
+	}
 }

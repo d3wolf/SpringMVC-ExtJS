@@ -13,12 +13,7 @@ public interface QueueService {
 	 * @return
 	 */
 	public ProcessingQueue getOrCreateQueue(String name);
-	/**
-	 * 根据名字获取队列
-	 * @param name
-	 * @return
-	 */
-	public ProcessingQueue getQueue(String name);
+
 	
 	/**
 	 * 获取所有队列
@@ -26,12 +21,7 @@ public interface QueueService {
 	 */
 	public List<ProcessingQueue> getAllQueue();
 	
-	/**
-	 * 创建队列
-	 * @param name
-	 * @return
-	 */
-	public ProcessingQueue createQueue(String name);
+	
 	
 	/**
 	 * 执行队列

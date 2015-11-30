@@ -7,8 +7,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import system.dao.QueueDaoBase;
-import system.dao.QueueEntryDaoBase;
+import system.dao.QueueDao;
+import system.dao.QueueEntryDao;
 import system.model.ProcessingQueue;
 import system.model.QueueEntry;
 import system.service.QueueService;
@@ -18,34 +18,29 @@ import system.service.QueueService;
 public class QueueServiceImpl implements QueueService {
 
 	@Autowired
-	private QueueDaoBase queueDao;
+	private QueueDao queueDao;
 	
 	@Autowired
-	private QueueEntryDaoBase entryDao;
+	private QueueEntryDao entryDao;
 	
 	public ProcessingQueue getOrCreateQueue(String name){
-		ProcessingQueue queue = queueDao.getQueue(name);
-		if(queue == null){
-			queue = queueDao.createQueue(name);
+		List<ProcessingQueue> queues = queueDao.getQueueByName(name);
+		ProcessingQueue queue = null;
+		if(queues == null || queues.size() == 0){
+			queue = ProcessingQueue.newProcessingQueue(name);
+			queue = queueDao.save(queue);
+		}else{
+			queue = queues.get(0);
 		}
 		
 		return queue;
 	}
 
-	public ProcessingQueue getQueue(String name) {
-		ProcessingQueue queue = queueDao.getQueue(name);
-		return queue;
-	}
-
-	public ProcessingQueue createQueue(String name) {
-		
-		return queueDao.createQueue(name);
-	}
 	
 	public List<ProcessingQueue> getAllQueue(){
-		List<ProcessingQueue> queues = queueDao.getAllQueue();
+		List<ProcessingQueue> queues = (List<ProcessingQueue>) queueDao.findAll();
 		for(ProcessingQueue queue : queues){
-			Long entryCount = entryDao.getQueueEntryCount(queue);
+			Long entryCount = entryDao.getQueueEntryCountByQueueRef(queue);
 			queue.setEntryCount(entryCount);
 		}
 		return queues;
@@ -78,7 +73,7 @@ public class QueueServiceImpl implements QueueService {
 	}
 
 	public Long getEntryCount(ProcessingQueue queue) {
-		return entryDao.getQueueEntryCount(queue);
+		return entryDao.getQueueEntryCountByQueueRef(queue);
 	}
 
 }
