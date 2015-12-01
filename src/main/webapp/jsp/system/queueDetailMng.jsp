@@ -14,14 +14,22 @@ Ext.onReady(function () {
 	var basePath = location[0]+'//'+location[2]+'/'+location[3]; 
 	
     var store = Ext.create('Ext.data.Store', {
-        fields: ["name", "enabled", "entryCount", "queueState"],
+    //    fields: ["entryState", "targetClass", "targetMethod", "arguments", "message", "createTimestamp"],
+        fields : [ 
+		           {name:'entryState', type:'string'},
+		           {name:'targetClass', type:'string'},
+		           {name:'targetMethod', type:'string'},
+		           {name:'arguments', type:'string'},
+		           {name:'message', type:'string'},
+		           {name:'createTimestamp', type:'date', dateFormat : 'time'}
+		         ],
         pageSize: 20,  //页容量5条数据
         //是否在服务端排序 （true的话，在客户端就不能排序）
         remoteSort: false,
         remoteFilter: true,
         proxy: {
             type: 'ajax',
-            url: '${pageContext.request.contextPath}/queue/getQueues.do',
+            url: '${pageContext.request.contextPath}/queue/getQueueEntries.do?id=${param.id}',
             reader: {   //这里的reader为数据存储组织的地方，下面的配置是为json格式的数据，例如：[{"total":50,"rows":[{"a":"3","b":"4"}]}]
                 type: 'json', //返回数据类型为json格式
                 root: 'rows',  //数据
@@ -30,9 +38,9 @@ Ext.onReady(function () {
         },
         sorters: [{
             //排序字段。
-            property: 'name',
+            property: 'ordeId',
             //排序类型，默认为 ASC 
-         //   direction: 'desc'
+            direction: 'desc'
         }],
         autoLoad: true  //即时加载数据
     });
@@ -40,15 +48,15 @@ Ext.onReady(function () {
     var grid = Ext.create('Ext.grid.Panel', {
 	    renderTo: Ext.getBody(),
 	    store: store,
-	    /* width : 600,
-	    height : 500, */
 	    layout : 'fit',
 	    selModel: { selType: 'checkboxmodel' },   //选择框
 	    columns: [                    
-	                  { text: '名称', dataIndex: 'name', align: 'left', maxWidth: 80 },
-	                  { text: '启用', dataIndex: 'enabled',  maxWidth: 120 },
-	                  { text: '等待条目', dataIndex: 'entryCount', align: 'left', minWidth: 80 },
-	                  { text: '状态', dataIndex: 'queueState', maxWidth: 80, align: 'left' }
+	                  { text: '状态', dataIndex: 'entryState', align: 'left'},
+	                  { text: '目标类', dataIndex: 'targetClass'},
+	                  { text: '目标方法', dataIndex: 'targetMethod', align: 'left' },
+	                  { text: '参数', dataIndex: 'arguments', align: 'left' },
+	                  { text: '信息', dataIndex: 'message', align: 'left' },
+	                  { text: '创建时间', dataIndex: 'createTimestamp', renderer : Ext.util.Format.dateRenderer('Y-m-d H:i:s')}
 	               ],
 	    bbar: [{
 	        xtype: 'pagingtoolbar',
@@ -72,7 +80,6 @@ Ext.onReady(function () {
 							handler : function(){
 								this.up("menu").hide();
 								var id = record.getId();
-								showDetail(id);
 							}
 						}]
 					}).showAt(e.getXY());//让右键菜单跟随鼠标位置 
@@ -90,10 +97,7 @@ Ext.onReady(function () {
 		Ext.MessageBox.alert("标题",selectedData.cataId);
 	}
 	
-	function showDetail(id){
-		window.parent.location.href=basePath  + '/#' + "queue/detail.do?id="+id;
-	}
-
+	
 }); 
 	
 </script>

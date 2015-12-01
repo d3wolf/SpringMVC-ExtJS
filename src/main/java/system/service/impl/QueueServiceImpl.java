@@ -46,6 +46,13 @@ public class QueueServiceImpl implements QueueService {
 		return queues;
 	}
 	
+	public List<QueueEntry> getEntriesByQueueId(Integer queueId){
+		ProcessingQueue queue = queueDao.getQueueById(queueId);
+		List<QueueEntry> list = entryDao.getQueueEntryByQueueRef(queue);
+		
+		return list;
+	}
+	
 	public void processQueue(ProcessingQueue queue) {
 		// TODO Auto-generated method stub
 

@@ -31,7 +31,7 @@
 		</property>
 		<property name="hibernateProperties">
 			<props>
-				<prop key="hibernate.hbm2ddl.auto">update</prop> <!--自动生成数据表 -->
+				<prop key="hibernate.hbm2ddl.auto">update</prop> 
 				<prop key="hibernate.dialect">org.hibernate.dialect.MySQL5Dialect</prop>
 				<prop key="hibernate.show_sql">false</prop>
 			</props>
@@ -40,7 +40,7 @@
 		<property name="packagesToScan">
 			<list>
 				<value>*.model</value>
-				<value>user.*</value><!--比类所在路径少一层-->
+				<value>user.*</value>
 			</list>
 		</property>
 	</bean>
@@ -66,19 +66,22 @@
 				<prop key="hibernate.max_fetch_depth">3</prop>
 				<prop key="hibernate.jdbc.fetch_size">18</prop>
 				<prop key="hibernate.jdbc.batch_size">10</prop>
-				<prop key="hibernate.hbm2ddl.auto">update</prop>
+				<prop key="hibernate.hbm2ddl.auto">update</prop><!--自动生成数据表 -->
 				<prop key="hibernate.show_sql">false</prop>
 				<prop key="hibernate.format_sql">true</prop>
 				<prop key="javax.persistence.validation.mode">none</prop>
 			</props>
 		</property>
 	</bean>
+	
 	<!-- 用于指定持久化实现厂商类 -->
 	<bean id="persistenceProvider" class="org.hibernate.ejb.HibernatePersistence"/>
+	
 	<!-- 用于设置JPA实现厂商的特定属性 -->
 	<bean id="jpaVendorAdapter" class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter">  
 		<property name="database" value="MYSQL"/>  
-	</bean>  
+	</bean>
+	
 	<!-- 用于指定一些高级特性 -->
 	<bean id="jpaDialect" class="org.springframework.orm.jpa.vendor.HibernateJpaDialect"/>
 	
@@ -88,15 +91,8 @@
 		<property name="entityManagerFactory" ref="entityManagerFactory" />  
 	</bean>
 	
-	<jpa:repositories base-package="*.dao"
-		entity-manager-factory-ref="entityManagerFactory" 
-		transaction-manager-ref="txManager"/>
-	
-	<!-- 设定transactionManager -->    
-	<bean id="txManagerH"    
-		class="org.springframework.orm.hibernate3.HibernateTransactionManager">    
-		<property name="sessionFactory" ref="sessionFactory" />    
-	</bean>  
+	<!--使 Spring 识别出需要为其实现的持久层接口-->
+	<jpa:repositories base-package="*.dao" entity-manager-factory-ref="entityManagerFactory" transaction-manager-ref="txManager"/>
        
 	<!--启动spring事务注解功能-->    
 	<tx:annotation-driven transaction-manager="txManager"/>  

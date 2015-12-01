@@ -57,6 +57,13 @@ public interface QueueService {
 	public QueueEntry getEntry(Integer id);
 	
 	/**
+	 * 根据队列id获取所有条目
+	 * @param queueId
+	 * @return
+	 */
+	public List<QueueEntry> getEntriesByQueueId(Integer queueId);
+	
+	/**
 	 * 获取队列条目数
 	 * @param queue
 	 * @return

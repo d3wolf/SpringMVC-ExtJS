@@ -19,4 +19,6 @@ public interface QueueDao extends CrudRepository<ProcessingQueue, Integer> {
 	 */
 	@Query("select queue from ProcessingQueue queue where queue.name=:name")
 	public List<ProcessingQueue> getQueueByName(@Param("name") String name);
+	
+	public ProcessingQueue getQueueById(Integer id);
 }

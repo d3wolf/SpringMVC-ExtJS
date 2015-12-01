@@ -88,8 +88,7 @@ public class MenuServiceImpl implements MenuService {
 		if (StringUtils.isNotEmpty((String) params.get(Constants.MenuConstants.ACTION_URL))) {
 			node.setActionUrl((String) params.get(Constants.MenuConstants.ACTION_URL));
 		}
-		// menuDao.executeHql("update MenuNode node set node.display=?", new
-		// Object[]{});
+
 		menuJpaDao.save(node);
 		return true;
 	}
