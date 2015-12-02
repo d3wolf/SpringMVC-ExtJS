@@ -40,15 +40,16 @@ Ext.onReady(function () {
     var grid = Ext.create('Ext.grid.Panel', {
 	    renderTo: Ext.getBody(),
 	    store: store,
-	    /* width : 600,
-	    height : 500, */
 	    layout : 'fit',
-	    selModel: { selType: 'checkboxmodel' },   //选择框
+	    selModel: {  
+	    	selType : 'checkboxmodel',
+	        mode : 'MULTI' //"SINGLE"/"SIMPLE"/"MULTI"
+	    },   
 	    columns: [                    
-	                  { text: '名称', dataIndex: 'name', align: 'left', maxWidth: 80 },
-	                  { text: '启用', dataIndex: 'enabled',  maxWidth: 120 },
-	                  { text: '等待条目', dataIndex: 'entryCount', align: 'left', minWidth: 80 },
-	                  { text: '状态', dataIndex: 'queueState', maxWidth: 80, align: 'left' }
+	                  { text: '名称', dataIndex: 'name', align: 'left', width: 200},
+	                  { text: '启用', dataIndex: 'enabled', width: 40},
+	                  { text: '等待条目', dataIndex: 'entryCount', align: 'left'},
+	                  { text: '状态', dataIndex: 'queueState', align: 'left' }
 	               ],
 	    bbar: [{
 	        xtype: 'pagingtoolbar',
@@ -69,21 +70,100 @@ Ext.onReady(function () {
 						float:true,
 						items:[{
 							text:"查看信息",
+							icon : '${pageContext.request.contextPath}/images/icon-info.gif',
 							handler : function(){
 								this.up("menu").hide();
 								var id = record.getId();
 								showDetail(id);
+							}
+						}, {
+							text:"删除队列及条目",
+							icon : '${pageContext.request.contextPath}/images/delete.gif',
+							handler : function(){
+								this.up("menu").hide();
+								var id = record.getId();
+								deleteQueueAndEntries(id);
 							}
 						}]
 					}).showAt(e.getXY());//让右键菜单跟随鼠标位置 
 				}
 	    },
 	     tbar:[
-	     {text:'新增',iconCls:'a_add',handler:showAlert},"-",
-	     {text:'停用/启用',iconCls:'a_lock'},"-",
+	     {text:'新建' ,handler : createQueue},"-",
+	     {text:'停用/启用' },"-",
 	     "->",{ iconCls:"a_search",text:"搜索",handler:showAlert}], 
 	});
 
+    function createQueue(){
+    	Ext.create("Ext.window.Window", {
+    	    id: "newQueueWin",
+    	    title: "新建队列",
+    	    width: 500,
+    	    height: 300,
+    	    layout: "fit",
+    	    items: [{
+    	            xtype: "form",
+    	            defaultType: 'textfield',
+    	            id : 'createQueueForm',
+    	            defaults: {
+    	                anchor: '100%',
+    	            },
+    	            fieldDefaults: {
+    	                labelWidth: 80,
+    	                labelAlign: "left",
+    	                flex: 1,
+    	                margin: 5
+    	            },
+    	            items: [
+    	                {
+    	                    xtype: "container",
+    	                    items: [
+    	                        { xtype: "textfield", name: "name", fieldLabel: "名称", allowBlank: false },
+    	                    ]
+    	                }
+    	            ]
+    	        }
+    	    ],
+    	    buttons: [
+    	        { xtype: "button", text: "确定", handler: btnsubmitclick },
+    	        { xtype: "button", text: "取消", handler: function () { this.up("window").close(); } }
+    	    ]
+    	}).show();
+    }
+    
+  //提交按钮处理方法
+	var btnsubmitclick = function () {
+	  var form = Ext.getCmp('createQueueForm');
+		if (form.getForm().isValid()) {
+			//通常发送到服务器端获取返回值再进行处理，我们在以后的教程中再讲解表单与服务器的交互问题。
+			Ext.Msg.alert("提示", "登陆成功!");
+			form.getForm().submit({
+				waitTitle: "请稍候",
+				waitMsg: '正在创建...',
+				url: '${pageContext.request.contextPath}/queue/createQueue.do',
+				method: 'post',
+				success: function(form, action) {
+				//	var msg = action.result.msg;
+				//	debugger;
+				//	Ext.Msg.alert('提示1', action.result.msg);
+					Ext.getCmp('newQueueWin').close();
+					store.load();
+				},
+				failure: function(form, action) {
+					if (action.result == undefined) {
+						Ext.Msg.alert('提示2', "系统出错...请联系管理员");
+						form.items.items[1].reset();
+					}else {
+						var msg = action.result;
+				//		debugger;
+						Ext.Msg.alert('提示3', action.result.msg);
+						form.items.items[1].reset();
+					}
+				}
+			}); 
+		}
+	}
+    
 	function showAlert(){
 		var selectedData=grid.getSelectionModel().getSelection()[0].data;
 		
@@ -93,7 +173,34 @@ Ext.onReady(function () {
 	function showDetail(id){
 		window.parent.location.href=basePath  + '/#' + "queue/detail.do?id="+id;
 	}
-
+	
+	function deleteQueueAndEntries(id){
+		Ext.MessageBox.confirm('注意', '将会删除队列及其所有条目，确认继续?', function(e){
+			if('yes' != e){
+				return;
+			}
+			Ext.Ajax.request({
+			    url: "${pageContext.request.contextPath}/queue/deleteQueue.do",
+			    method : 'post',
+			    params : {
+			    	id : id
+			    },
+			    success: function(response){
+			    	var rpText = Ext.decode(response.responseText);
+			    	Ext.Msg.alert('提示3', rpText.msg);
+			    	store.load();
+			   
+			    },
+			    failure: function(response, opts) {
+			        Ext.MessageBox.alert("错误", "失败:\n" + response.responseText);
+			    }
+			})
+		}); 
+	}
+	
+	Ext.EventManager.onWindowResize(function(){
+		grid.getView().refresh();
+	}) 
 }); 
 	
 </script>

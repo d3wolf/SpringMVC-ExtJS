@@ -56,9 +56,9 @@ public class SpiderController {
 		for (int i = 1; i <= urlIndex; i++) {
 
 			List<Joke> jokes = jokeService.getJokeBy3rd("" + i);
-			logger.info("找到Joke条数:" + jokes.size());
+			logger.debug("找到Joke条数:" + jokes.size());
 			int count = jokeService.persistJoke(jokes);
-			logger.info("保存Joke条数:" + count);
+			logger.debug("保存Joke条数:" + count);
 
 			//需要加入进度条的参数
 			float processPercentage = (float)i / (float)urlIndex;

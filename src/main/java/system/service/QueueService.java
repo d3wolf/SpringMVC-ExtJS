@@ -21,7 +21,19 @@ public interface QueueService {
 	 */
 	public List<ProcessingQueue> getAllQueue();
 	
+	/**
+	 * 创建队列
+	 * @param name
+	 * @return
+	 */
+	public ProcessingQueue createQueue(String name);
 	
+	/**
+	 * 根据名称获取队列
+	 * @param name
+	 * @return
+	 */
+	public ProcessingQueue getQueueByName(String name);
 	
 	/**
 	 * 执行队列
@@ -76,5 +88,12 @@ public interface QueueService {
 	 * @return
 	 */
 	public QueueEntry resetEntry(QueueEntry entry);
+	
+	/**
+	 * 删除队列和条目
+	 * @param queueId
+	 * @return
+	 */
+	public Integer deleteQueueAndEntries(Integer queueId);
 
 }

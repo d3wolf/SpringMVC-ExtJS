@@ -88,7 +88,7 @@ Ext.onReady(function () {
 	     tbar:[
 	     {text:'新增',iconCls:'a_add',handler:showAlert},"-",
 	     {text:'停用/启用',iconCls:'a_lock'},"-",
-	     "->",{ iconCls:"a_search",text:"搜索",handler:showAlert}], 
+	     "->",{ iconCls:"a_search",text:"搜索",handler:showAlert}],
 	});
 
 	function showAlert(){
@@ -97,7 +97,9 @@ Ext.onReady(function () {
 		Ext.MessageBox.alert("标题",selectedData.cataId);
 	}
 	
-	
+	Ext.EventManager.onWindowResize(function(){
+		grid.getView().refresh();
+	}) 
 }); 
 	
 </script>
