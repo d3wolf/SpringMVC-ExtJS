@@ -27,7 +27,11 @@ public class Constants {
 		/** 条目状态*/
 		public static final String ENTRY_STATE_READY = "READY";
 		/** 条目状态*/
-		public static final String ENTRY_STATE_CLOSED = "CLOSED";
-		
+		public static final String ENTRY_STATE_CLOSED = "CLOSED";	
+	}
+	
+	public static final class SpiderConstants{
+		public static final String CONTENT_TYPE_JSON = "application/json";
+		public static final String CONTENT_TYPE_HTML = "application/html";
 	}
 }

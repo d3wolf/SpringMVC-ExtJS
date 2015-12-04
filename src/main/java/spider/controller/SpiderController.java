@@ -16,8 +16,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import spider.model.Joke;
+import spider.service.DoubanMovieListService;
 import spider.service.JokeService;
-
 import common.Constants;
 
 @Controller
@@ -54,16 +54,15 @@ public class SpiderController {
 
 		JSONArray ja = new JSONArray();
 		for (int i = 1; i <= urlIndex; i++) {
+			//需要加入进度条的参数
+			float processPercentage = (float)i / (float)urlIndex;
+			request.getSession().setAttribute(Constants.ProcessConstants.processPercentageAttribute, processPercentage);
+			request.getSession().setAttribute(Constants.ProcessConstants.processMessageAttribute, "processing " + i + " of " + urlIndex);
 
 			List<Joke> jokes = jokeService.getJokeBy3rd("" + i);
 			logger.debug("找到Joke条数:" + jokes.size());
 			int count = jokeService.persistJoke(jokes);
 			logger.debug("保存Joke条数:" + count);
-
-			//需要加入进度条的参数
-			float processPercentage = (float)i / (float)urlIndex;
-			request.getSession().setAttribute(Constants.ProcessConstants.processPercentageAttribute, processPercentage);
-			request.getSession().setAttribute(Constants.ProcessConstants.processMessageAttribute, "processing " + i + " of " + urlIndex);
 
 			JSONObject jo = new JSONObject();
 			jo.put("find", jokes.size());
@@ -101,6 +100,56 @@ public class SpiderController {
 		}else{
 			request.getSession().removeAttribute(Constants.ProcessConstants.processPercentageAttribute);  
             request.getSession().removeAttribute(Constants.ProcessConstants.processMessageAttribute);	
+		}
+	}
+	
+	@Autowired
+	private DoubanMovieListService movieListService;
+	
+	@RequestMapping("movieList.do")
+	public void getMovieListByPages(@RequestParam("urlIndex") int urlIndex, HttpServletRequest request, HttpServletResponse response) throws IOException {
+
+		for (int i = 1; i <= urlIndex; i++) {
+			//需要加入进度条的参数
+			request.getSession().setAttribute("Movie_"+Constants.ProcessConstants.processPercentageAttribute, 0f);
+			request.getSession().setAttribute("Movie_"+Constants.ProcessConstants.processMessageAttribute, "processing " + i + " of " + urlIndex);
+
+			movieListService.parseMovieList(""+urlIndex);
+			
+			float processPercentage = (float)i / (float)urlIndex;
+			request.getSession().setAttribute("Movie_"+Constants.ProcessConstants.processPercentageAttribute, processPercentage);
+			try {
+				Thread.sleep(10000);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+	@RequestMapping("processMovieList.do")
+	public void getMovieListProcessInfo(HttpServletRequest request, HttpServletResponse response) throws IOException {
+		Float processPercentage = (Float) request.getSession().getAttribute("Movie_"+Constants.ProcessConstants.processPercentageAttribute);
+		Object processMessage = request.getSession().getAttribute("Movie_"+Constants.ProcessConstants.processMessageAttribute);
+		boolean finished = false;
+		if(processPercentage != null){
+			if (processPercentage >= 1) {
+				finished = true;
+				request.getSession().removeAttribute("Movie_"+Constants.ProcessConstants.processPercentageAttribute);  
+	            request.getSession().removeAttribute("Movie_"+Constants.ProcessConstants.processMessageAttribute);
+			}
+			
+			JSONObject jo = new JSONObject();
+			jo.put("percentage", processPercentage);
+			jo.put("msg", processMessage);
+			jo.put("finished", finished);
+			jo.put("success", true);
+			
+			logger.debug("process status: " + jo);
+			
+			response.setContentType("text/html;charset=UTF-8");// 处理乱码
+			response.getWriter().write(jo.toString());
+		}else{
+			request.getSession().removeAttribute("Movie_"+Constants.ProcessConstants.processPercentageAttribute);  
+            request.getSession().removeAttribute("Movie_"+Constants.ProcessConstants.processMessageAttribute);	
 		}
 	}
 }

@@ -19,7 +19,7 @@ import org.springframework.beans.factory.annotation.Autowired;
  * 所有模型的超类
  */
 @MappedSuperclass
-public class BaseObject {
+public abstract class BaseObject {
 
 	@Id
 	@Column(name = "id")

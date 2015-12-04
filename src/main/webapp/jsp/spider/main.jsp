@@ -17,7 +17,6 @@
 		    width: 400,
 		    id : "jokePanel",
 		    bodyPadding: 10,
-		    renderTo: Ext.getBody(),
 		    layout : 'hbox',
 		    items: [{
 		    	xtype: 'numberfield',
@@ -44,13 +43,61 @@
 		    	text: '抓取前N页',
 		    	handler : function(){
 		    		var value = Ext.getCmp('urlIndex').value;
-		    		fentchData("${pageContext.request.contextPath}/spider/jokes.do",{urlIndex : value}, true);
+		    		fentchData("${pageContext.request.contextPath}/spider/jokes.do",{urlIndex : value}, true, "${pageContext.request.contextPath}/spider/process.do?t=" + new Date());
 		    	}
 		    }]
 		});
+		
+		var moviePanel = Ext.create('Ext.panel.Panel', {
+		    title: 'douban movie spider[<a href="http://movie.douban.com/j/search_subjects?type=movie&tag=%E7%83%AD%E9%97%A8&sort=recommend&page_limit=2&page_start=1" target="_blank">original data</a>]',
+		    width: 400,
+		    id : "moviePanel",
+		    bodyPadding: 10,
+		    layout : 'hbox',
+		    items: [{
+		    	xtype: 'numberfield',
+		        anchor: '100%',
+		        id: 'movieUrlIndex',
+		        width : 80,
+		        value: 1,
+		        minValue: 1
+		    },{
+		    	xtype : 'button',
+		    	text: '抓取指定页',
+		    	style: {
+		        //     marginBottom: '10px',//距底部高度
+		             marginLeft:'10px',//距左边宽度
+		             marginRight:'10px'//距右边宽度
+		    	},
+		    	handler : function(){
+		    		var value = Ext.getCmp('movieUrlIndex').value;
+		    		Ext.MessageBox.alert("抓取信息","抓取前N页");
+		    	}
+		    },
+		    {
+		    	xtype : 'button',
+		    	text: '抓取前N页',
+		    	handler : function(){
+		    		var value = Ext.getCmp('movieUrlIndex').value;
+		    		fentchData("${pageContext.request.contextPath}/spider/movieList.do",{urlIndex : value}, true, "${pageContext.request.contextPath}/spider/processMovieList.do?t=" + new Date());
+		    	}
+		    }]
+		});
+		
+		var mainPanel = Ext.create('Ext.panel.Panel', {
+		    title: "main",
+		    width: 800,
+		    id : "mainPanel",
+		    bodyPadding: 5,
+		    renderTo: Ext.getBody(),
+		});
+		
+		mainPanel.add(jokePanel);
+		mainPanel.add(moviePanel);
 	}
 	
-	function fentchData(url, params, needProcessBar){
+	
+	function fentchData(url, params, needProcessBar, processUrl){
 		//执行抓取动作
     	Ext.Ajax.request({
 		    url: url,
@@ -80,7 +127,7 @@
 	     //  	var processBar = Ext.MessageBox.progress("正在抓取", "", "0%");
 			var timer = setInterval(function(){
 		      Ext.Ajax.request({
-		            url: "${pageContext.request.contextPath}/spider/process.do?t=" + new Date(),
+		            url: processUrl,
 		            method: 'get',
 		            success: function(response, options){
 				    	var obj =  Ext.decode(response.responseText);
