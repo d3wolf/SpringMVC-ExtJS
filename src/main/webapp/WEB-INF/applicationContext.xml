@@ -97,7 +97,8 @@
 	<!--启动spring事务注解功能-->    
 	<tx:annotation-driven transaction-manager="txManager"/>  
   
-	<!--自动扫描该路径所有注解     -->
-	<context:component-scan base-package="*"/> 
+	<context:component-scan base-package="*" >
+    	<context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller" />
+	</context:component-scan>
 	
 </beans>    

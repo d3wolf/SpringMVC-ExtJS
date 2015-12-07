@@ -49,7 +49,7 @@ public interface QueueService {
 	 * @param arguments
 	 * @return
 	 */
-	public Boolean addEntry(String queueName, String targetClass, String targetMethod, String[] arguments);
+	public QueueEntry addEntry(String queueName, String targetClass, String targetMethod, String arguments);
 	
 	/**
 	 * 增加队列条目
@@ -59,7 +59,7 @@ public interface QueueService {
 	 * @param arguments
 	 * @return
 	 */
-	public Boolean addEntry(ProcessingQueue queue, String targetClass, String targetMethod, String[] arguments);
+	public QueueEntry addEntry(ProcessingQueue queue, String targetClass, String targetMethod, String arguments);
 	
 	/**
 	 * 获取队列条目

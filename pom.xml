@@ -99,6 +99,13 @@
 			<version>1.7.1</version>
 		</dependency>
 
+		<!-- aop -->
+		<dependency>
+			<groupId>org.aspectj</groupId>
+			<artifactId>aspectjweaver</artifactId>
+			<version>1.8.3</version>
+		</dependency>
+
 		<!--json-lib -->
 		<dependency>
 			<groupId>net.sf.json-lib</groupId>
@@ -108,11 +115,8 @@
 		</dependency>
 
 		<!-- hibernate-annotation -->
-		<!-- <dependency>
-			<groupId>javax.persistence</groupId>
-			<artifactId>persistence-api</artifactId>
-			<version>1.0</version>
-		</dependency> -->
+		<!-- <dependency> <groupId>javax.persistence</groupId> <artifactId>persistence-api</artifactId> 
+			<version>1.0</version> </dependency> -->
 		<dependency>
 			<groupId>org.hibernate</groupId>
 			<artifactId>hibernate-core</artifactId>

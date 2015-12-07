@@ -98,15 +98,20 @@ public class QueueServiceImpl implements QueueService {
 
 	}
 
-	public Boolean addEntry(String queueName, String targetClass, String targetMethod, String[] arguments) {
+	public QueueEntry addEntry(String queueName, String targetClass, String targetMethod, String arguments) {
 		ProcessingQueue queue = getOrCreateQueue(queueName);
+		
+		QueueEntry entry = QueueEntry.newQueueEntry(queue, targetClass, targetMethod, arguments);
+		entryDao.save(entry);
 
-		return null;
+		return entry;
 	}
 
-	public Boolean addEntry(ProcessingQueue queue, String targetClass, String targetMethod, String[] arguments) {
-		// TODO Auto-generated method stub
-		return null;
+	public QueueEntry addEntry(ProcessingQueue queue, String targetClass, String targetMethod, String arguments) {
+		QueueEntry entry = QueueEntry.newQueueEntry(queue, targetClass, targetMethod, arguments);
+		entryDao.save(entry);
+
+		return entry;
 	}
 
 	public QueueEntry getEntry(Integer id) {

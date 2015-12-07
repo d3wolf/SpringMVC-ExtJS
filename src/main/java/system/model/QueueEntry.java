@@ -28,6 +28,9 @@ public class QueueEntry extends BaseObject {
 
 	private String targetMethod;
 	
+	@Column
+	private Boolean deleteWhenExecuted = true;
+	
 	public static QueueEntry newQueueEntry(ProcessingQueue queue, String targetClass, String targetMethod, String arguments){
 		QueueEntry entry = new QueueEntry();
 		entry.setQueueRef(queue);
@@ -90,6 +93,14 @@ public class QueueEntry extends BaseObject {
 
 	public void setTargetMethod(String targetMethod) {
 		this.targetMethod = targetMethod;
+	}
+
+	public Boolean getDeleteWhenExecuted() {
+		return deleteWhenExecuted;
+	}
+
+	public void setDeleteWhenExecuted(Boolean deleteWhenExecuted) {
+		this.deleteWhenExecuted = deleteWhenExecuted;
 	}
 
 }

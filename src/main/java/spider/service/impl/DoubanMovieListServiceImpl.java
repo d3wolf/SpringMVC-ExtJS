@@ -19,9 +19,10 @@ import spider.model.DoubanMovieCrawlUrl;
 import spider.model.FetchedPage;
 import spider.service.DoubanMovieListService;
 import spider.service.JsoupService;
+import system.service.QueueService;
 
 @Service
-@Transactional(readOnly = false, propagation = Propagation.REQUIRED)
+@Transactional(readOnly = false, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
 public class DoubanMovieListServiceImpl implements DoubanMovieListService {
 
 	private static final Logger logger = Logger.getLogger(DoubanMovieListServiceImpl.class.getName());
@@ -86,5 +87,30 @@ public class DoubanMovieListServiceImpl implements DoubanMovieListService {
 		} else {
 			logger.debug("status code error: " + fetchedPage.getStatusCode());
 		}
+	}
+	
+	@Autowired
+	private QueueService queueService;
+	
+	public Integer push2MovieCrawlerUrlQueue(){
+		String queueName = "doubanMovieCrawlerUrlQueue";
+		
+		String targetClass = "";
+		String targetMethod = "";
+		
+		int count = 0;
+		
+		List<DoubanMovieCrawlUrl> list = (List<DoubanMovieCrawlUrl>) urlDao.findAll();
+		for(DoubanMovieCrawlUrl crawlUrl : list){
+			JSONObject jo = new JSONObject();
+			jo.put("oid", crawlUrl.toString());
+			
+			String arguments = jo.toString();
+			
+			queueService.addEntry(queueName, targetClass, targetMethod, arguments);
+			count ++;
+		}
+		
+		return count;
 	}
 }

@@ -23,8 +23,10 @@
 	
 	<mvc:annotation-driven />
   
-	<!-- 把标记了@Controller注解的类转换为bean -->      
-	<context:component-scan base-package="*.controller" />
+	<!-- 只扫描controller，作为一个控制器，其他的事情不做 -->      
+    <context:component-scan base-package="*" ><!--use-default-filters="false"-->
+        <context:include-filter type="annotation" expression="org.springframework.stereotype.Controller" />
+    </context:component-scan>
   
 	<!-- 启动Spring MVC的注解功能，完成请求和注解POJO的映射 -->      
 	<bean class="org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerAdapter" />      
@@ -40,6 +42,7 @@
 		class="org.springframework.web.multipart.commons.CommonsMultipartResolver"      
 		p:defaultEncoding="utf-8" />      
   
-  
+  	<!--aop-->
+	<aop:aspectj-autoproxy/>
 
 </beans>    
