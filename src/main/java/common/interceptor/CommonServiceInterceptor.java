@@ -103,7 +103,7 @@ public class CommonServiceInterceptor {
     @AfterThrowing(value = "aspectjMethod()", throwing = "ex")    
     public void afterThrowingAdvice(JoinPoint joinPoint, Exception ex) {    
         logger.info("----------afterThrowingAdvice().invoke");  
-        logger.info(" 错误信息："+ex.getMessage());  
+        logger.info(" 错误信息："+ex);  
         logger.info(" 此处意在执行核心业务逻辑出错时，捕获异常，并可做一些日志记录操作等等");  
         logger.info(" 可通过joinPoint来获取所需要的内容");  
         logger.info("----------afterThrowingAdvice() end");    
