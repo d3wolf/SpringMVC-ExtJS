@@ -67,15 +67,15 @@ public class CommonServiceInterceptor {
      */   
     @Around(value = "aspectjMethod()")
     public Object aroundAdvice(ProceedingJoinPoint pjp) throws Throwable {    
-        logger.info("------aroundAdvice().invoke");  
+        logger.debug("------aroundAdvice().invoke");  
         logger.debug(" 此处可以做类似于Before Advice的事情");  
           
         //调用核心逻辑  
-        logger.info("------around ProceedingJoinPoint: " + pjp);
+        logger.debug("------around ProceedingJoinPoint: " + pjp);
         Object retVal = pjp.proceed(); 
-        logger.info("------around proceed object: " + retVal);
+        logger.debug("------around proceed object: " + retVal);
         logger.debug(" 此处可以做类似于After Advice的事情");  
-        logger.info("------aroundAdvice() end");  
+        logger.debug("------aroundAdvice() end");  
         return retVal;  
     }    
       

@@ -95,8 +95,8 @@ public class DoubanMovieListServiceImpl implements DoubanMovieListService {
 	public Integer push2MovieCrawlerUrlQueue(){
 		String queueName = "doubanMovieCrawlerUrlQueue";
 		
-		String targetClass = "";
-		String targetMethod = "";
+		String targetClass = "spider.service.impl.DoubanMovieDetailServiceImpl";
+		String targetMethod = "crawlMovieDetail";
 		
 		int count = 0;
 		

@@ -14,7 +14,7 @@ public class Movie extends BaseObject {
 	private String dataId;
 	@Column
 	private String title;
-	@Column
+	@Column(columnDefinition="TEXT")
 	private String summary;
 	@Column
 	private Float rate;

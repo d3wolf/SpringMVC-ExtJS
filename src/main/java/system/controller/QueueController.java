@@ -6,6 +6,7 @@ import java.util.Map;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -14,7 +15,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import system.model.ProcessingQueue;
 import system.model.QueueEntry;
 import system.service.QueueService;
-import system.service.impl.QueueServiceImpl;
+
+import common.BaseException;
 
 @Controller
 @RequestMapping("/queue")
@@ -83,12 +85,24 @@ public class QueueController {
 	
 	@RequestMapping("getQueueEntries.do")
 	@ResponseBody
-	public Map<String, Object> getQueueEntries(@RequestParam("id")Integer id){
-		List<QueueEntry> entries = queueService.getEntriesByQueueId(id);
+	public Map<String, Object> getQueueEntries(@RequestParam("id")Integer id,@RequestParam("page")Integer page,@RequestParam("limit")Integer limit){
+		Page<QueueEntry> entries = queueService.getEntriesByPage(id, page, limit);
 		Map<String,Object> map = new HashMap<String,Object>();  
-        map.put("rows", entries);
-        map.put("total", entries.size());
+        map.put("rows", entries.getContent());
+        map.put("total", entries.getTotalElements());
         
         return map;
+	}
+	
+	@RequestMapping("processQueue.do")
+	@ResponseBody
+	public Map<String, Object> processQueue(@RequestParam("id")Integer id) throws BaseException{
+		ProcessingQueue queue = queueService.getQueueById(id);
+		queueService.processQueue(queue);
+		
+		Map<String,Object> map = new HashMap<String,Object>();  
+		map.put("success", "true");
+		
+		return map;
 	}
 }

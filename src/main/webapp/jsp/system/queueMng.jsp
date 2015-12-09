@@ -77,6 +77,14 @@ Ext.onReady(function () {
 								showDetail(id);
 							}
 						}, {
+							text:"执行队列",
+							icon : '${pageContext.request.contextPath}/images/icon-info.gif',
+							handler : function(){
+								this.up("menu").hide();
+								var id = record.getId();
+								processQueue(id);
+							}
+						}, {
 							text:"删除队列及条目",
 							icon : '${pageContext.request.contextPath}/images/delete.gif',
 							handler : function(){
@@ -135,8 +143,6 @@ Ext.onReady(function () {
 	var btnsubmitclick = function () {
 	  var form = Ext.getCmp('createQueueForm');
 		if (form.getForm().isValid()) {
-			//通常发送到服务器端获取返回值再进行处理，我们在以后的教程中再讲解表单与服务器的交互问题。
-			Ext.Msg.alert("提示", "登陆成功!");
 			form.getForm().submit({
 				waitTitle: "请稍候",
 				waitMsg: '正在创建...',
@@ -196,6 +202,23 @@ Ext.onReady(function () {
 			    }
 			})
 		}); 
+	}
+	
+	//执行队列
+	function processQueue(id){
+		Ext.Ajax.request({
+		    url: "${pageContext.request.contextPath}/queue/processQueue.do",
+		    method : 'post',
+		    params : {
+		    	id : id
+		    },
+		    success: function(response){
+		   
+		    },
+		    failure: function(response, opts) {
+		        Ext.MessageBox.alert("错误", "失败:\n" + response.responseText);
+		    }
+		});
 	}
 	
 	Ext.EventManager.onWindowResize(function(){

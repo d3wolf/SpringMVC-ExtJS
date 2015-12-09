@@ -44,5 +44,8 @@
   
   	<!--aop-->
 	<aop:aspectj-autoproxy/>
+	
+	<aop:config proxy-target-class="true"><!--动态代理生成的类转换到我们自定义的实现类-->
+	</aop:config>
 
 </beans>    

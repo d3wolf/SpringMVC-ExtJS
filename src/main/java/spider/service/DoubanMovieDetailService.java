@@ -13,5 +13,5 @@ public interface DoubanMovieDetailService {
 	 * @throws IOException
 	 */
 	public abstract void crawlMovieDetail(String crawlOid) throws BaseException, IOException;
-
+	
 }
