@@ -74,7 +74,7 @@ public class QueueController {
 	
 	@RequestMapping("getQueues.do")
 	@ResponseBody
-	public Map<String, Object> getQueues(){
+	public Map<String, Object> getQueues(@RequestParam("page")Integer page,@RequestParam("limit")Integer limit){
 		List<ProcessingQueue> queues = queueService.getAllQueue();
 		Map<String,Object> map = new HashMap<String,Object>();  
         map.put("rows", queues);

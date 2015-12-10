@@ -3,7 +3,6 @@ package spider.service.impl;
 import java.io.IOException;
 import java.util.Map;
 
-import org.apache.http.Header;
 import org.jsoup.Connection.Response;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -15,7 +14,7 @@ import spider.service.JsoupService;
 
 @Service
 public class JsoupServiceImpl implements JsoupService {
-
+	
 	public Document getDocumentFromUrl(String url) throws IOException {
 		Document doc = Jsoup.connect(url).data("query", "Java") // 请求参数
 				.userAgent("Mozilla") // 设置 User-Agent

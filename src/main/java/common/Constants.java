@@ -33,5 +33,7 @@ public class Constants {
 	public static final class SpiderConstants{
 		public static final String CONTENT_TYPE_JSON = "application/json";
 		public static final String CONTENT_TYPE_HTML = "application/html";
+		
+		public static final String DOUBAN_MOVIE_COVER_PATH = "E:\\attachs\\doubanMovieCover\\";
 	}
 }

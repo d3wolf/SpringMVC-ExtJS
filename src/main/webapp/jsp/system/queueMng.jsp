@@ -54,10 +54,10 @@ Ext.onReady(function () {
 	    bbar: [{
 	        xtype: 'pagingtoolbar',
 	        store: store,
-	        displayMsg: '显示 {0} - {1} 条，共计 {2} 条',
+	    //    displayMsg: '显示 {0} - {1} 条，共计 {2} 条',
 	        emptyMsg: "没有数据",
-	        beforePageText: "当前页",
-	        afterPageText: "共{0}页",
+	 //       beforePageText: "当前页",
+	  //      afterPageText: "共{0}页",
 	        displayInfo: true                 
 	    }],
 	     listeners: {
@@ -211,12 +211,6 @@ Ext.onReady(function () {
 		    method : 'post',
 		    params : {
 		    	id : id
-		    },
-		    success: function(response){
-		   
-		    },
-		    failure: function(response, opts) {
-		        Ext.MessageBox.alert("错误", "失败:\n" + response.responseText);
 		    }
 		});
 	}

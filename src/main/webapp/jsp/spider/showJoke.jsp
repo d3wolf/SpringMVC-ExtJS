@@ -27,7 +27,11 @@
 					var page = ${param.page};
 					var prev = page - 1;
 					if(prev > 0){
-						window.parent.location.href=basePath  + '/#' + "showJoke.do?page="+prev;
+						if(location.indexOf("#")>0){
+							window.parent.location.href=basePath  + '/#' + "showJoke.do?page="+prev;
+						}else{
+							window.location.href=basePath + "/showJoke.do?page="+prev;
+						}
 					}
 				}
 			}, {
@@ -36,7 +40,12 @@
 				handler : function(){
 					var page = ${param.page};
 					var next = page + 1;
-					window.parent.location.href=basePath  + '/#' + "showJoke.do?page="+next;
+				//	window.parent.location.href=basePath  + '/#' + "showJoke.do?page="+next;
+					if(location.indexOf("#")>0){
+						window.parent.location.href=basePath  + '/#' + "showJoke.do?page="+next;
+					}else{
+						window.location.href=basePath + "/showJoke.do?page="+next;
+					}
 				}
 			} ],
 			listeners : {
