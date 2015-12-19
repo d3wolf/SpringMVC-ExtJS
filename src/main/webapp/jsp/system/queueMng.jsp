@@ -78,7 +78,7 @@ Ext.onReady(function () {
 							}
 						}, {
 							text:"执行队列",
-							icon : '${pageContext.request.contextPath}/images/icon-info.gif',
+							icon : '${pageContext.request.contextPath}/images/execute.gif',
 							handler : function(){
 								this.up("menu").hide();
 								var id = record.getId();
