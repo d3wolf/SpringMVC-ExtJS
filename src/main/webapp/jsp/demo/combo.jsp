@@ -3,9 +3,9 @@
 <head>
 <title>Combo</title>
 <link rel="stylesheet" href="${pageContext.request.contextPath}/javascript/extjs/resources/css/ext-all.css" type="text/css"></link>
-<script type="text/javascript" src="${pageContext.request.contextPath}/javascript/extjs/ext-all.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/javascript/extjs/ext-all-debug.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/javascript/extjs/locale/ext-lang-zh_CN.js"></script>
-<script type="text/javascript" src="${pageContext.request.contextPath}/javascript/extjs/ux/TabCloseMenu.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/javascript/extjs/examples/ux/TabCloseMenu.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/javascript/common.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/javascript/jquery/jquery-1.6.min.js"></script>
 <script type="text/javascript">
@@ -116,7 +116,6 @@
 				}
 			}
 		});
-
 	});
 	
 </script>
